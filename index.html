@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Time Conversion</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>Time Conversion</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="input-date">Today is </label>
+                    <input type="date" id="input-date" class="form-control"/>
+                </div>
+                 <!--<button type="button" id="convert-btn" class="btn btn-primary">Submit</button> -->
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="lead">
+                Today is <span id="today-date">?</span>
+            </p>
+        </div>
+        <div class="col-xs-12">
+        	<p class="lead">
+                Julian Day Number is <span id="jdn-date">?</span>
+            </p>
+        </div>
+        <div class="col-xs-12">
+            <p class="lead">
+                MJD is <span id="mjd-date">?</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"></script>
+<script>
+    var org_date, jdn_date;
+
+    function ADtoJDN(year, month, day) {
+        var j, a, y, m;
+        a = Math.floor((14 - month) / 12);
+        y = year + 4800 - a;
+        m = month + a * 12 - 3;
+        j = day + Math.floor((m * 153 + 2) / 5)
+                + y * 365
+                + Math.floor(y / 4)
+                - Math.floor(y / 100)
+                + Math.floor(y / 400)
+                - 32045;
+        return j;
+    }
+
+    function tranDayz() {
+        org_date = $('#input-date').val();
+
+        console.log('org: ' + org_date);
+
+        var date;
+        date = new Date(org_date);
+
+        jdn_date = ADtoJDN(date.getFullYear(), date.getMonth() + 1, date.getDate());
+
+        $('#today-date').text(date.toLocaleDateString());
+        $('#jdn-date').text(jdn_date);
+        $('#mjd-date').text(jdn_date - 2400000)
+    }
+
+    $('#input-date').change(function() {
+       tranDayz();
+    });
+
+    $(document).ready(function() {
+
+    });
+</script>
+</body>
+</html>
