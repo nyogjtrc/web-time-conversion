@@ -39,6 +39,11 @@
                 MJD is <span id="mjd-date">?</span>
             </p>
         </div>
+        <div class="col-xs-12">
+            <p class="lead">
+                干支年：<span id="cycle-year">?</span>年
+            </p>
+        </div>
     </div>
 </div>
 
@@ -66,10 +71,18 @@
         return j;
     }
 
+    function ADtoChineseCycle(year) {
+        var h_map = ['庚','辛','壬','癸','甲','乙','丙','丁','戊','己'];
+        var e_map = ['申','酉','戌','亥','子','丑','寅','卯','辰','巳','午','未'];
+        var cycle_year;
+
+        cycle_year = h_map[(year % 10)] + e_map[(year % 12)];
+
+        return cycle_year;
+    }
+
     function tranDayz() {
         org_date = $('#input-date').val();
-
-        console.log('org: ' + org_date);
 
         var date;
         date = new Date(org_date);
@@ -78,7 +91,8 @@
 
         $('#today-date').text(date.toLocaleDateString());
         $('#jdn-date').text(jdn_date);
-        $('#mjd-date').text(jdn_date - 2400000)
+        $('#mjd-date').text(jdn_date - 2400000);
+        $('#cycle-year').text(ADtoChineseCycle(date.getFullYear()));
     }
 
     $('#input-date').change(function() {
